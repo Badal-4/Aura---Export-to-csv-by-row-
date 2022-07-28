@@ -1,0 +1,49 @@
+({
+    /*doInit : function (component, event, helper) {      
+        helper.getReportData(component);     
+    },*/
+    doInit : function(component,event,helper)
+    {
+        helper.getReportData(component);
+    },
+
+    downloadSelectedCase :function(component, event, helper){
+        var recordsList=component.get("v.reportlist");
+        var csv = helper.convertListToCSV(component, recordsList);
+        if (csv == null){return;}
+        // Create a temporal <a> html tag to download the CSV file
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/pdf;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_self';
+        hiddenElement.download ='ReportExportData.csv';;
+        document.body.appendChild(hiddenElement);
+        // using click() js function to download csv file
+        hiddenElement.click();
+    },
+    
+    handleClick : function(component,event,helper)
+    {   
+      /*  var tempid = event.getSource().get("v.class");
+       var parseVar = tempid;
+    
+        component.set("v.testList",parseVar);
+       // console.log(JSON.parse(JSON.stringify(tempid)));
+        alert(component.get("v.testList"));
+        var recordsList=component.get("v.testList");
+        var csv = helper.convertListToCSV(component, recordsList);
+        if (csv == null){return;}
+        // Create a temporal <a> html tag to download the CSV file
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/pdf;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_self';
+        hiddenElement.download ='ReportExportData.csv';;
+        document.body.appendChild(hiddenElement);
+        // using click() js function to download csv file
+        hiddenElement.click();*/
+      // console.log(parseVar);
+        switch(event.getParam('value')) {
+            case "1": helper.doEdit(); break;
+            case "2": helper.downloadSelectedCase2(component,event,helper); break;
+        }
+    }
+ })
