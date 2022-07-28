@@ -1,0 +1,58 @@
+<aura:component controller="CustomerCommunity_ReportModuleController" 
+implements="forceCommunity:themeLayout,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+access="global" extends="c:CustomerCommunity_LoggedInUser_HeaderCmp">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:attribute name="reportlist" type="Report[]"/>
+    <aura:attribute name="exportWithId" type="boolean" default="false"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="testList" type="String[]"/>
+    <div style="width:100%;padding: 15px">
+       
+        <div style="float:right">
+            <lightning:button iconName="utility:download" iconPosition="left" label="Export as CSV" onclick="{!c.downloadSelectedCase}" class="slds-button slds-button_brand"/>        
+        </div>
+    </div>
+    <br/><br/>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr>
+               
+                <th scope="col">
+                    <div class="slds-truncate" title="Report Id">Id</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Name">Name</div>
+                </th>
+                <th scope="col">
+
+                    <div class="slds-truncate" title="Name">Actions</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.reportlist}" var="reportVar" indexVar="index"  >
+                <tr >  
+                    
+                    <td scope="row">
+                        {!reportVar.Id}
+                    </td>
+                    <td scope="row">
+                        {!reportVar.Name}
+                    </td>
+                    <!--Row Actions Starts-->
+                    <td>
+                        <lightning:buttonMenu alternativeText="Show menu" onselect="{!c.handleClick}" class="{!reportVar}">
+                           
+                <lightning:menuItem value="1" label="Run" />
+                
+                <lightning:menuItem value="2" label="Export" />
+                <lightning:menuItem value="3" label="Favourite" />
+                <lightning:menuItem value="4" label="Subscribe" />
+            </lightning:buttonMenu>
+                    </td>
+                    <!--Row Actions Ends-->
+                </tr>
+            </aura:iteration> 
+        </tbody>
+    </table>
+</aura:component>	
