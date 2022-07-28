@@ -1,0 +1,89 @@
+({
+    getReportData : function(component) {        
+        var action=component.get('c.getReportList');        
+        action.setCallback(this,function(response){   
+            if(response.getState()=='SUCCESS'){
+                component.set("v.reportlist",response.getReturnValue());                
+            }
+        });
+        $A.enqueueAction(action);        
+    },
+    downloadSelectedCase2 :function(component, event,helper){
+      /*  var recordsList=component.get("v.reportlist");
+        var csv = helper.convertListToCSV(component, recordsList);
+        if (csv == null){return;}
+        // Create a temporal <a> html tag to download the CSV file
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/pdf;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_self';
+        hiddenElement.download ='ReportExportData.csv';;
+        document.body.appendChild(hiddenElement);
+        // using click() js function to download csv file
+        hiddenElement.click();*/
+        var tempid = event.getSource().get("v.class");
+        var parseVar = tempid;
+     
+         component.set("v.testList",parseVar);
+        // console.log(JSON.parse(JSON.stringify(tempid)));
+         alert(component.get("v.testList"));
+         var recordsList=component.get("v.testList");
+         var csv = helper.convertListToCSV(component, recordsList);
+         if (csv == null){return;}
+         // Create a temporal <a> html tag to download the CSV file
+         var hiddenElement = document.createElement('a');
+         hiddenElement.href = 'data:text/pdf;charset=utf-8,' + encodeURI(csv);
+         hiddenElement.target = '_self';
+         hiddenElement.download ='ReportExportData.csv';;
+         document.body.appendChild(hiddenElement);
+         // using click() js function to download csv file
+         hiddenElement.click();
+    },
+    convertListToCSV : function(component, sObjectList){
+        if (sObjectList == null || sObjectList.length == 0) {
+            return null; // 
+        }
+
+        // CSV file parameters.
+        var columnEnd = ',';
+        var lineEnd =  '\n';
+
+        // Get the CSV header from the list.
+        var keys = new Set();
+        sObjectList.forEach(function (record) {
+            Object.keys(record).forEach(function (key) {
+                keys.add(key);
+            });
+        });
+
+        // 
+        keys = Array.from(keys);
+
+        var csvString = '';
+        csvString += keys.join(columnEnd);
+        csvString += lineEnd;
+
+        for(var i=0; i < sObjectList.length; i++){
+            var counter = 0;
+
+            for(var sTempkey in keys) {
+                var skey = keys[sTempkey] ;
+
+                // add , after every value except the first.
+                if(counter > 0){
+                    csvString += columnEnd;
+                }
+
+                // If the column is undefined, leave it as blank in the CSV file.
+                var value = sObjectList[i][skey] === undefined ? '' : sObjectList[i][skey];
+                csvString += '"'+ value +'"';
+                counter++;
+            }
+
+            csvString += lineEnd;
+        }
+
+        return csvString;
+    },
+
+  
+})
